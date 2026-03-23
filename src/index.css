@@ -159,6 +159,13 @@ span {
   font-weight: var(--font-weight-medium);
 }
 
+.hero-refund-note {
+  margin: 6px 0 0;
+  color: rgba(184, 198, 221, 0.72);
+  font-size: 13px;
+  line-height: 1.65;
+}
+
 .problem-section {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
@@ -575,6 +582,75 @@ span {
   color: rgba(184, 198, 221, 0.74);
   font-size: 13px;
   line-height: 1.6;
+  display: grid;
+  gap: 4px;
+}
+
+.pricing-check-item {
+  display: block;
+}
+
+.pricing-check-mark {
+  color: var(--color-accent);
+  font-weight: var(--font-weight-bold);
+}
+
+.pricing-service-info {
+  margin-top: var(--space-2);
+  padding-top: var(--space-2);
+  border-top: 1px solid rgba(184, 198, 221, 0.24);
+  display: grid;
+  gap: 4px;
+}
+
+.pricing-service-info p {
+  margin: 0;
+  color: rgba(184, 198, 221, 0.74);
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.job-input-section {
+  width: min(100%, 700px);
+  margin: 0 auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-3);
+  background: linear-gradient(180deg, #162447, #111d38);
+}
+
+.job-input-title {
+  margin: 0;
+  text-align: center;
+  font-size: clamp(28px, 3.2vw, 40px);
+  font-weight: 800;
+}
+
+.job-input-subtitle {
+  margin: var(--space-2) 0 var(--space-3);
+  text-align: center;
+  color: rgba(184, 198, 221, 0.9);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.job-input-form {
+  display: grid;
+  gap: 10px;
+}
+
+.job-input-textarea {
+  min-height: 200px;
+}
+
+.job-input-textarea-secondary {
+  min-height: 120px;
+}
+
+.job-input-submit {
+  width: 100%;
+  justify-self: stretch;
+  margin-top: var(--space-1);
 }
 
 .faq-section {
@@ -924,6 +1000,10 @@ span {
 
 @media (max-width: 768px) {
   .contact-section {
+    padding: var(--space-3);
+  }
+
+  .job-input-section {
     padding: var(--space-3);
   }
 

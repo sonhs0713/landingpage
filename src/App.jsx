@@ -5,6 +5,7 @@ import HowItWorks from './components/HowItWorks'
 import Solution from './components/Solution'
 import Sample from './components/Sample'
 import Pricing from './components/Pricing'
+import JobInputForm from './components/JobInputForm'
 import FAQ from './components/FAQ'
 import Contact from './components/Contact'
 import EmailModal from './components/EmailModal'
@@ -40,6 +41,31 @@ function App() {
     }
   }
 
+  const handlePricingClick = () => {
+    const jobInputSection = document.getElementById('job-input-section')
+    if (!jobInputSection) return
+    jobInputSection.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    })
+  }
+
+  const handleJobFormPayment = async ({ email, jobPostingText, additionalRequest }) => {
+    sessionStorage.setItem('earlybird_job_posting_text', jobPostingText)
+    sessionStorage.setItem('earlybird_additional_request', additionalRequest || '')
+    setUserEmail(email)
+
+    try {
+      setIsPaying(true)
+      await requestEarlyBirdPayment(email)
+    } catch (error) {
+      alert(error?.message || '결제 진행 중 오류가 발생했습니다. 다시 시도해주세요.')
+      throw error
+    } finally {
+      setIsPaying(false)
+    }
+  }
+
   return (
     <div className="app-shell">
       <Hero onPayClick={handlePayClick} isPaying={isPaying} />
@@ -47,7 +73,8 @@ function App() {
       <HowItWorks />
       <Solution />
       <Sample />
-      <Pricing onPayClick={handlePayClick} isPaying={isPaying} />
+      <Pricing onPayClick={handlePricingClick} isPaying={isPaying} />
+      <JobInputForm onSubmitPayment={handleJobFormPayment} isPaying={isPaying} />
       <FAQ />
       <Contact />
       <Footer />

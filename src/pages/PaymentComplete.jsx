@@ -31,13 +31,19 @@ function PaymentComplete() {
       }
 
       const email = sessionStorage.getItem('earlybird_customer_email') || ''
+      const jobPostingText = sessionStorage.getItem('earlybird_job_posting_text') || ''
+      const additionalRequest = sessionStorage.getItem('earlybird_additional_request') || ''
+      const paymentCompletedAt = new Date().toISOString()
 
       const formData = new FormData()
       formData.append('event', 'payment_completed')
+      formData.append('_subject', '[muno] 결제 완료 및 분석 요청')
       formData.append('email', email)
-      formData.append('paidAt', new Date().toISOString())
+      formData.append('paymentCompletedAt', paymentCompletedAt)
       formData.append('amount', amount)
       formData.append('orderId', orderId)
+      formData.append('jobPostingText', jobPostingText)
+      formData.append('additionalRequest', additionalRequest)
 
       try {
         const response = await fetch(endpoint, {
@@ -53,6 +59,8 @@ function PaymentComplete() {
         }
 
         sessionStorage.removeItem('earlybird_customer_email')
+        sessionStorage.removeItem('earlybird_job_posting_text')
+        sessionStorage.removeItem('earlybird_additional_request')
         navigate('/thank-you', { replace: true })
       } catch {
         setErrorMessage('결제 정보 저장에 실패했습니다. 잠시 후 다시 시도해주세요.')

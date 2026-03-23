@@ -21,6 +21,13 @@ function Hero({ onPayClick, isPaying }) {
         <div className="hero-meta">
           <p className="hero-launch-text">🕐 얼리버드 20명 등록 완료 시 즉시 오픈 예정</p>
           <p className="hero-limited-text">⚡ 얼리버드 20명 한정 · 현재 [N]명 등록 완료</p>
+          <p className="hero-refund-note">
+            리포트를 받으시기 전에는 전액 환불 가능합니다.
+            <br />
+            리포트 수령 후에는 환불이 어렵습니다.
+            <br />
+            환불 문의: [이메일]
+          </p>
         </div>
       </div>
     </section>
