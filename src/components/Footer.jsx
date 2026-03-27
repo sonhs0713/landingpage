@@ -6,7 +6,7 @@ function Footer() {
       <div className="footer-business-info">
         <span>회사명: muno</span>
         <span className="footer-separator" aria-hidden="true">|</span>
-        <span>대표자명: 손현수</span>
+        <span>대표: 손현수</span>
         <span className="footer-separator" aria-hidden="true">|</span>
         <span>사업자등록번호: 678-17-02416</span>
         <span className="footer-separator" aria-hidden="true">|</span>
