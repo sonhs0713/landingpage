@@ -116,7 +116,7 @@ export async function requestEarlyBirdPayment(customerEmail) {
   appendHiddenInput(form, 'ordr_idxx', orderId)
   appendHiddenInput(form, 'good_name', ORDER_NAME)
   appendHiddenInput(form, 'good_mny', amount)
-  appendHiddenInput(form, 'good_expr', '1')
+  appendHiddenInput(form, 'good_expr', '0')
   appendHiddenInput(form, 'offerPeriod', OFFER_PERIOD_TEXT)
   appendHiddenInput(form, 'offer_period', OFFER_PERIOD_TEXT)
   appendHiddenInput(form, 'buyr_mail', customerEmail)
