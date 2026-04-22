@@ -120,7 +120,8 @@ export async function requestEarlyBirdPayment(customerEmail) {
   appendHiddenInput(form, 'offerPeriod', OFFER_PERIOD_TEXT)
   appendHiddenInput(form, 'offer_period', OFFER_PERIOD_TEXT)
   appendHiddenInput(form, 'buyr_mail', customerEmail)
-  appendHiddenInput(form, 'Ret_URL', `${window.location.origin}/payment-complete`)
+  // KCP는 Ret_URL로 POST를 보내므로 서버 엔드포인트에서 먼저 수신해야 합니다.
+  appendHiddenInput(form, 'Ret_URL', `${window.location.origin}/api/kcp/return`)
   appendHiddenInput(form, 'pay_method', '100000000000')
   appendHiddenInput(form, 'currency', '410')
 
