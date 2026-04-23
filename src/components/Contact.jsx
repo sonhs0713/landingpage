@@ -8,9 +8,12 @@ function Contact() {
   const handleSubmit = async (event) => {
     event.preventDefault()
 
-    const endpoint = import.meta.env.VITE_FORMSPREE_ENDPOINT
+    const endpoint =
+      import.meta.env.VITE_FORMSPREE_CONTACT_ENDPOINT || import.meta.env.VITE_FORMSPREE_ENDPOINT
     if (!endpoint) {
-      setErrorMessage('문의 설정이 아직 완료되지 않았습니다. 관리자에게 문의해주세요.')
+      setErrorMessage(
+        '문의 전송 설정이 없습니다. .env.local에 VITE_FORMSPREE_ENDPOINT를 설정한 뒤 서버를 다시 실행해주세요.',
+      )
       return
     }
 

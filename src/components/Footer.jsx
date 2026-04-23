@@ -16,7 +16,7 @@ function Footer() {
         <span className="footer-separator" aria-hidden="true">|</span>
         <span>통신판매업 신고번호: 2026-성남분당B-0340 호</span>
         <span className="footer-separator" aria-hidden="true">|</span>
-        <span>이메일: sonhs0713@gmail.com</span>
+        <span>이메일: getmuno@gmail.com</span>
       </div>
       <div className="footer-divider" />
       <div className="footer-base-text">
