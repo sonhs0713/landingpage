@@ -1202,8 +1202,8 @@ span {
 }
 
 .landing-page .hero-title {
-  font-size: clamp(34px, 6.2vw, 64px);
-  font-weight: 850;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 700;
   line-height: 1.16;
   letter-spacing: -0.025em;
   max-width: 920px;
@@ -1212,12 +1212,12 @@ span {
 }
 
 .landing-page .hero-sub {
-  font-size: clamp(17px, 2.2vw, 22px);
+  font-size: clamp(1.1rem, 2.5vw, 1.35rem);
   color: var(--text-secondary);
   max-width: 760px;
   margin: 0 auto 48px;
   animation: fadeUp 0.6s 0.2s ease both;
-  line-height: 1.7;
+  line-height: 1.75;
   letter-spacing: -0.005em;
 }
 
@@ -1242,25 +1242,28 @@ span {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  background: var(--accent);
-  color: var(--black);
-  font-size: 17px;
-  font-weight: 800;
-  padding: 18px 36px;
-  border-radius: 100px;
+  justify-content: center;
+  min-height: 48px;
+  background: #f5c542;
+  color: #111;
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding: 1rem 2rem;
+  border-radius: 8px;
   text-decoration: none;
   border: none;
   cursor: pointer;
-  border: 1px solid rgba(250, 204, 21, 0.5);
-  box-shadow: 0 10px 24px rgba(250, 204, 21, 0.24);
-  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid rgba(245, 197, 66, 0.55);
+  box-shadow: 0 10px 28px rgba(245, 197, 66, 0.22);
+  transition: transform 0.2s ease, filter 0.2s ease, box-shadow 0.2s ease;
   letter-spacing: -0.01em;
+  margin: 2rem 0;
 }
 
 .landing-page .btn-primary:hover {
-  background: var(--accent-light);
-  transform: translateY(-3px);
-  box-shadow: 0 16px 34px rgba(250, 204, 21, 0.36);
+  filter: brightness(1.1);
+  transform: translateY(-2px);
+  box-shadow: 0 14px 34px rgba(245, 197, 66, 0.35);
 }
 
 .landing-page .btn-primary:focus-visible,
@@ -1426,8 +1429,8 @@ span {
 }
 
 .landing-page .section {
-  padding: 96px 24px;
-  max-width: 1000px;
+  padding: clamp(4rem, 8vw, 6rem) 24px;
+  max-width: 720px;
   margin: 0 auto;
 }
 
@@ -1441,8 +1444,8 @@ span {
 }
 
 .landing-page .section-title {
-  font-size: clamp(28px, 4vw, 42px);
-  font-weight: 800;
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  font-weight: 600;
   letter-spacing: -0.03em;
   line-height: 1.2;
   margin-bottom: 16px;
@@ -1450,10 +1453,10 @@ span {
 }
 
 .landing-page .section-sub {
-  font-size: 17px;
+  font-size: 1rem;
   color: var(--text-secondary);
   max-width: 560px;
-  line-height: 1.9;
+  line-height: 1.75;
   letter-spacing: 0.01em;
 }
 
@@ -1512,24 +1515,22 @@ span {
 }
 
 .landing-page .market-truth-section {
-  padding-top: 8px;
+  padding-top: clamp(2rem, 4vw, 3rem);
 }
 
 .landing-page .market-truth-grid {
   margin-top: 44px;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
+  gap: 1.5rem;
 }
 
 .landing-page .market-truth-card {
   position: relative;
-  padding: 28px 26px;
-  border-radius: 14px;
-  border: 1px solid rgba(148, 163, 184, 0.28);
-  background:
-    linear-gradient(160deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.8)),
-    rgba(255, 255, 255, 0.03);
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.05);
   box-shadow: var(--card-shadow);
   overflow: hidden;
 }
@@ -1544,12 +1545,13 @@ span {
 
 .landing-page .market-truth-value {
   margin: 0 0 8px;
-  font-size: clamp(40px, 5vw, 56px);
+  display: block;
+  font-size: clamp(2.5rem, 6vw, 4rem);
   line-height: 1;
   letter-spacing: -0.03em;
-  font-weight: 900;
-  color: #facc15;
-  text-shadow: 0 0 18px rgba(250, 204, 21, 0.2);
+  font-weight: 800;
+  color: #f5c542;
+  text-shadow: none;
 }
 
 .landing-page .market-truth-headline {
@@ -1563,10 +1565,10 @@ span {
 
 .landing-page .market-truth-desc {
   margin: 0;
-  font-size: 14px;
-  line-height: 1.82;
+  font-size: 0.9rem;
+  line-height: 1.75;
   letter-spacing: 0.005em;
-  color: var(--text-secondary);
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .landing-page .market-truth-source {
@@ -1670,51 +1672,61 @@ span {
 }
 
 .landing-page .demo-section {
-  padding: 96px 24px;
+  padding: clamp(4rem, 8vw, 6rem) 24px;
   background: linear-gradient(180deg, rgba(39, 52, 74, 0.58), rgba(23, 31, 44, 0.64));
   border-top: 1px solid var(--card-border);
   border-bottom: 1px solid var(--card-border);
 }
 
 .landing-page .demo-inner {
-  max-width: 960px;
+  max-width: 720px;
   margin: 0 auto;
 }
 
 .landing-page .demo-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 24px;
+  gap: 1.5rem;
   margin-top: 48px;
 }
 
 .landing-page .demo-card {
   background: var(--surface-card);
-  border: 1px solid var(--card-border);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: var(--radius);
   padding: 30px;
   box-shadow: var(--card-shadow);
 }
 
+.landing-page .demo-card.result {
+  border: 1px solid rgba(245, 197, 66, 0.65);
+  box-shadow: 0 10px 30px rgba(245, 197, 66, 0.18);
+}
+
 .landing-page .demo-card-label {
-  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.75rem;
   font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.8);
   margin-bottom: 16px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--border);
+  padding: 0.35rem 0.6rem;
+  border-radius: 999px;
+  border-bottom: none;
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .landing-page .demo-card.result .demo-card-label {
-  color: var(--accent);
+  color: #f5c542;
+  background: rgba(245, 197, 66, 0.14);
+  border: 1px solid rgba(245, 197, 66, 0.5);
 }
 
 .landing-page .demo-text {
-  font-size: 13px;
+  font-size: 1rem;
   color: var(--text-secondary);
-  line-height: 1.85;
+  line-height: 1.75;
 }
 
 .landing-page .demo-text strong {
@@ -1758,9 +1770,9 @@ span {
 }
 
 .landing-page .result-item-content {
-  font-size: 13px;
+  font-size: 1rem;
   color: var(--text-secondary);
-  line-height: 1.7;
+  line-height: 1.75;
 }
 
 .landing-page .result-item-content strong {
@@ -1859,7 +1871,7 @@ span {
 }
 
 .landing-page .pricing-section {
-  padding: 96px 24px;
+  padding: clamp(4rem, 8vw, 6rem) 24px;
   max-width: 560px;
   margin: 0 auto;
   text-align: center;
@@ -1971,7 +1983,7 @@ span {
 }
 
 .landing-page .form-section {
-  padding: 96px 24px;
+  padding: clamp(4rem, 8vw, 6rem) 24px;
   max-width: 640px;
   margin: 0 auto;
 }
@@ -1998,15 +2010,15 @@ span {
 }
 
 .landing-page .form-group {
-  margin-bottom: 20px;
+  margin-bottom: 1.5rem;
 }
 
 .landing-page .form-label {
   display: block;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-primary);
-  margin-bottom: 8px;
+  margin-bottom: 0.5rem;
 }
 
 .landing-page .form-label .optional {
@@ -2019,13 +2031,14 @@ span {
 .landing-page .form-input,
 .landing-page .form-textarea {
   width: 100%;
+  min-height: 52px;
   background: rgba(15, 23, 42, 0.75);
   border: 1px solid rgba(148, 163, 184, 0.28);
-  border-radius: var(--radius);
+  border-radius: 8px;
   color: var(--text-primary);
   font-family: inherit;
-  font-size: 15px;
-  padding: 14px 16px;
+  font-size: 1rem;
+  padding: 0.875rem 1rem;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
   outline: none;
   resize: vertical;
@@ -2034,7 +2047,9 @@ span {
 .landing-page .form-input:focus,
 .landing-page .form-textarea:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.12);
+  outline: 2px solid #f5c542;
+  outline-offset: 2px;
+  box-shadow: none;
 }
 
 .landing-page .form-input::placeholder,
@@ -2048,24 +2063,25 @@ span {
 
 .landing-page .form-submit {
   width: 100%;
-  background: var(--accent);
-  color: var(--black);
+  min-height: 56px;
+  background: #f5c542;
+  color: #111;
   font-family: inherit;
-  font-size: 17px;
-  font-weight: 800;
-  padding: 18px;
-  border-radius: 100px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding: 1rem 2rem;
+  border-radius: 8px;
   border: none;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: transform 0.2s ease, filter 0.2s ease, box-shadow 0.2s ease;
   letter-spacing: -0.01em;
-  margin-top: 8px;
+  margin: 2rem 0;
 }
 
 .landing-page .form-submit:hover {
-  background: var(--accent-light);
+  filter: brightness(1.1);
   transform: translateY(-2px);
-  box-shadow: 0 12px 40px rgba(245, 158, 11, 0.35);
+  box-shadow: 0 14px 34px rgba(245, 197, 66, 0.35);
 }
 
 .landing-page .form-submit:disabled {
@@ -2084,9 +2100,14 @@ span {
 }
 
 .landing-page .faq-section {
-  padding: 96px 24px;
-  max-width: 680px;
+  padding: clamp(4rem, 8vw, 6rem) 24px;
+  max-width: 720px;
   margin: 0 auto;
+  width: 100%;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
 .landing-page .faq-title-custom {
@@ -2100,7 +2121,7 @@ span {
   background: var(--surface-card);
   box-shadow: var(--card-shadow);
   overflow: hidden;
-  margin-bottom: 12px;
+  margin-bottom: 1.5rem;
 }
 
 .landing-page .faq-item:last-child {
@@ -2148,7 +2169,7 @@ span {
 }
 
 .landing-page .faq-answer {
-  font-size: 15px;
+  font-size: 1rem;
   color: var(--text-secondary);
   line-height: 1.75;
   padding: 0 22px 24px;
@@ -2160,9 +2181,28 @@ span {
 }
 
 .landing-page .contact-section {
-  padding: 96px 24px;
+  padding: clamp(4rem, 8vw, 6rem) 24px;
   max-width: 640px;
   margin: 0 auto;
+  width: 100%;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.landing-page .section > * + *,
+.landing-page .demo-inner > * + *,
+.landing-page .form-card > * + *,
+.landing-page .pricing-card > * + *,
+.landing-page .contact-card > * + * {
+  margin-top: 1.5rem;
+}
+
+.landing-page p,
+.landing-page li {
+  font-size: 1rem;
+  line-height: 1.75;
 }
 
 .landing-page .contact-title-custom {
@@ -2251,9 +2291,13 @@ span {
   }
 }
 
-@media (max-width: 680px) {
+@media (max-width: 768px) {
   .landing-page .demo-grid {
     grid-template-columns: 1fr;
+  }
+
+  .landing-page .demo-card.result {
+    order: -1;
   }
 
   .landing-page .trust-strip-inner {
@@ -2262,6 +2306,11 @@ span {
 
   .landing-page .market-truth-grid {
     grid-template-columns: 1fr;
+  }
+
+  .landing-page .btn-primary,
+  .landing-page .form-submit {
+    min-height: 48px;
   }
 }
 

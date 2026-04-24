@@ -143,29 +143,6 @@ function App() {
         </div>
       </section>
 
-      <section className="founder-section">
-        <div className="founder-card">
-          <div className="founder-label">서비스를 만든 이유</div>
-          <p className="founder-quote">
-            저는 이직을 준비할 때 &quot;일단 취업이 되는 게 먼저&quot;라는 생각에 공고를 제대로 읽지 않았습니다.
-            <br />
-            결과는 <em>취업사기, 블랙기업, 물경력</em>을 모두 경험하는 것이었습니다.
-            <br />
-            <br />
-            그 1~2년을 되돌릴 수 없었습니다.
-            <br />
-            적어도 다음 사람은 막아보고 싶었습니다.
-          </p>
-          <div className="founder-byline">
-            <div className="founder-avatar">H</div>
-            <div>
-              <div className="founder-name">현수</div>
-              <div className="founder-desc">muno 대표</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <section className="section">
         <div className="section-label section-centered">왜 필요한가</div>
         <h2 className="section-title section-centered">
@@ -198,100 +175,6 @@ function App() {
           </div>
         </div>
       </section>
-
-      <section className="section market-truth-section" aria-labelledby="market-truth-title">
-        <div className="section-label section-centered">현실 데이터</div>
-        <h2 id="market-truth-title" className="section-title section-centered">
-          채용공고, 그대로 믿으면 60%가 후회합니다
-        </h2>
-        <p className="section-sub section-centered market-truth-sub">
-          회사는 채용공고를 &apos;진실&apos;이 아닌 &apos;마케팅&apos;으로 씁니다.
-          <br />
-          Jobrisk는 그 광고 이면에 가려진 실무의 민낯과 커리어의 함정을 데이터로 걸러내어,
-          <br />
-          구직자가 &apos;속아서 입사하는 일&apos;을 막아드립니다.
-        </p>
-        <div className="market-truth-grid">
-          <article className="market-truth-card">
-            <p className="market-truth-value">60%</p>
-            <h3 className="market-truth-headline">채용공고와 실제 업무, 60%가 다릅니다</h3>
-            <p className="market-truth-desc">
-              채용공고는 회사가 좋은 인재를 꼬시기 위해 만든 &apos;마케팅 문서&apos;입니다. 팩트만 골라내는 필터가 없다면,
-              불일치의 리스크는 구직자가 감당해야 합니다.
-              <span className="market-truth-source">출처: 2015, 알바천국</span>
-            </p>
-          </article>
-
-          <article className="market-truth-card">
-            <p className="market-truth-value">45.1%</p>
-            <h3 className="market-truth-headline">취업 사기, 절대 남의 일이 아닙니다</h3>
-            <p className="market-truth-desc">
-              구직 경험자 10명 중 4명 이상이 사기성 채용을 경험했습니다. 감에 의존하지 말고 데이터로 검증하세요.
-              <span className="market-truth-source">출처: 2021, 인크루트</span>
-            </p>
-          </article>
-
-          <article className="market-truth-card">
-            <p className="market-truth-value">37.7%</p>
-            <h3 className="market-truth-headline">직장인 37.7%가 물경력을 걱정합니다</h3>
-            <p className="market-truth-desc">
-              성장이 멈춘 경력은 이직 시장에서 가장 위험한 자산입니다. 입사 전, 커리어 패스를 먼저 진단하세요.
-              <span className="market-truth-source">출처: 2023, 잡코리아</span>
-            </p>
-          </article>
-
-          <article className="market-truth-card">
-            <p className="market-truth-value">30~50%</p>
-            <h3 className="market-truth-headline">보이지 않는 블랙기업의 징후들</h3>
-            <p className="market-truth-desc">
-              계약서 미작성, 과로 등 부당한 환경은 공고의 행간에 숨어 있습니다. 우리는 그 신호를 찾아내어 구직자를
-              보호합니다.
-              <span className="market-truth-source">출처: 2015, 청년유니온</span>
-            </p>
-          </article>
-        </div>
-      </section>
-
-      <div className="divider" />
-
-      <section className="stakes-section">
-        <div className="stakes-inner">
-          <div className="stakes-number">1~2년</div>
-          <div className="stakes-caption">잘못된 이직 한 번이 날려버리는 커리어</div>
-          <p className="stakes-desc">
-            퇴사를 결심하고 다시 이직할 때까지,
-            <br />
-            그 공백기에 동기들은 계속 앞으로 나아갑니다.
-            <br />
-            공고 하나를 잘못 읽은 대가치고는 너무 큽니다.
-          </p>
-        </div>
-      </section>
-
-      <section className="section">
-        <div className="section-label section-centered">사용 방법</div>
-        <h2 className="section-title section-centered">3분이면 충분합니다</h2>
-        <p className="section-sub section-centered">복잡한 것 없습니다. 공고를 붙여넣기만 하면 됩니다.</p>
-        <div className="steps-grid">
-          <div className="step-item">
-            <div className="step-num">01</div>
-            <div className="step-title">내 조건을 입력합니다</div>
-            <div className="step-desc">연차, 희망 연봉, 피하고 싶은 조건을 간단히 적어주세요</div>
-          </div>
-          <div className="step-item">
-            <div className="step-num">02</div>
-            <div className="step-title">채용공고를 붙여넣습니다</div>
-            <div className="step-desc">지원하려는 공고 텍스트를 그대로 복사해서 넣으면 됩니다</div>
-          </div>
-          <div className="step-item">
-            <div className="step-num">03</div>
-            <div className="step-title">리포트를 받습니다</div>
-            <div className="step-desc">1시간 이내 이메일로 분석 결과를 보내드립니다 (평일 10시~18시)</div>
-          </div>
-        </div>
-      </section>
-
-      <div className="divider" />
 
       <section className="demo-section">
         <div className="demo-inner">
@@ -363,6 +246,56 @@ function App() {
         </div>
       </section>
 
+      <section className="section market-truth-section" aria-labelledby="market-truth-title">
+        <div className="section-label section-centered">현실 데이터</div>
+        <h2 id="market-truth-title" className="section-title section-centered">
+          채용공고, 그대로 믿으면 60%가 후회합니다
+        </h2>
+        <p className="section-sub section-centered market-truth-sub">
+          회사는 채용공고를 &apos;진실&apos;이 아닌 &apos;마케팅&apos;으로 씁니다.
+          <br />
+          Jobrisk는 그 광고 이면에 가려진 실무의 민낯과 커리어의 함정을 데이터로 걸러내어,
+          <br />
+          구직자가 &apos;속아서 입사하는 일&apos;을 막아드립니다.
+        </p>
+        <div className="market-truth-grid">
+          <article className="market-truth-card">
+            <p className="market-truth-value">60%</p>
+            <h3 className="market-truth-headline">채용공고와 실제 업무, 60%가 다릅니다</h3>
+            <p className="market-truth-desc">
+              채용공고는 회사가 좋은 인재를 꼬시기 위해 만든 &apos;마케팅 문서&apos;입니다. 팩트만 골라내는 필터가 없다면,
+              불일치의 리스크는 구직자가 감당해야 합니다.
+              <span className="market-truth-source">출처: 2015, 알바천국</span>
+            </p>
+          </article>
+
+          <article className="market-truth-card">
+            <p className="market-truth-value">45.1%</p>
+            <h3 className="market-truth-headline">취업 사기, 절대 남의 일이 아닙니다</h3>
+            <p className="market-truth-desc">
+              구직 경험자 10명 중 4명 이상이 사기성 채용을 경험했습니다. 감에 의존하지 말고 데이터로 검증하세요.
+              <span className="market-truth-source">출처: 2021, 인크루트</span>
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <div className="divider" />
+
+      <section className="stakes-section">
+        <div className="stakes-inner">
+          <div className="stakes-number">1~2년</div>
+          <div className="stakes-caption">잘못된 이직 한 번이 날려버리는 커리어</div>
+          <p className="stakes-desc">
+            퇴사를 결심하고 다시 이직할 때까지,
+            <br />
+            그 공백기에 동기들은 계속 앞으로 나아갑니다.
+            <br />
+            공고 하나를 잘못 읽은 대가치고는 너무 큽니다.
+          </p>
+        </div>
+      </section>
+
       <section className="section">
         <div className="section-label section-centered">분석 항목</div>
         <h2 className="section-title section-centered">이런 분석을 해드립니다</h2>
@@ -398,37 +331,26 @@ function App() {
         </div>
       </section>
 
-      <div className="divider" />
-
-      <section className="success-section">
-        <div className="success-inner">
-          <div className="section-label">이걸 쓰면 어떻게 달라지나요</div>
-          <h2 className="section-title success-title">
-            &quot;역시 잘 골랐다&quot;는 확신을 갖고
-            <br />
-            첫 출근을 하세요
-          </h2>
-          <div className="success-list">
-            <div className="success-item">
-              <div className="success-check">✓</div>
-              공고를 읽으면서 &quot;이게 맞는 건지&quot; 불안해하지 않아도 됩니다
-            </div>
-            <div className="success-item">
-              <div className="success-check">✓</div>
-              연봉 협상 테이블에서 적정 금액을 알고 앉을 수 있습니다
-            </div>
-            <div className="success-item">
-              <div className="success-check">✓</div>
-              면접에서 회사를 평가하는 질문을 먼저 던질 수 있습니다
-            </div>
-            <div className="success-item">
-              <div className="success-check">✓</div>
-              잘못된 이직으로 1~2년을 날리는 일을 피할 수 있습니다
-            </div>
+      <section className="section">
+        <div className="section-label section-centered">사용 방법</div>
+        <h2 className="section-title section-centered">3분이면 충분합니다</h2>
+        <p className="section-sub section-centered">복잡한 것 없습니다. 공고를 붙여넣기만 하면 됩니다.</p>
+        <div className="steps-grid">
+          <div className="step-item">
+            <div className="step-num">01</div>
+            <div className="step-title">내 조건을 입력합니다</div>
+            <div className="step-desc">연차, 희망 연봉, 피하고 싶은 조건을 간단히 적어주세요</div>
           </div>
-          <a href="#form" className="btn-primary btn-secondary-size">
-            지금 바로 진단받기 →
-          </a>
+          <div className="step-item">
+            <div className="step-num">02</div>
+            <div className="step-title">채용공고를 붙여넣습니다</div>
+            <div className="step-desc">지원하려는 공고 텍스트를 그대로 복사해서 넣으면 됩니다</div>
+          </div>
+          <div className="step-item">
+            <div className="step-num">03</div>
+            <div className="step-title">리포트를 받습니다</div>
+            <div className="step-desc">1시간 이내 이메일로 분석 결과를 보내드립니다 (평일 10시~18시)</div>
+          </div>
         </div>
       </section>
 
@@ -516,6 +438,29 @@ function App() {
               리포트 수령 후에는 환불이 어렵습니다
             </p>
           </form>
+        </div>
+      </section>
+
+      <section className="founder-section">
+        <div className="founder-card">
+          <div className="founder-label">서비스를 만든 이유</div>
+          <p className="founder-quote">
+            저는 이직을 준비할 때 &quot;일단 취업이 되는 게 먼저&quot;라는 생각에 공고를 제대로 읽지 않았습니다.
+            <br />
+            결과는 <em>취업사기, 블랙기업, 물경력</em>을 모두 경험하는 것이었습니다.
+            <br />
+            <br />
+            그 1~2년을 되돌릴 수 없었습니다.
+            <br />
+            적어도 다음 사람은 막아보고 싶었습니다.
+          </p>
+          <div className="founder-byline">
+            <div className="founder-avatar">H</div>
+            <div>
+              <div className="founder-name">현수</div>
+              <div className="founder-desc">muno 대표</div>
+            </div>
+          </div>
         </div>
       </section>
 
