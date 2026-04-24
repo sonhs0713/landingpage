@@ -2,6 +2,7 @@ const EARLY_BIRD_AMOUNT = 3000
 const ORDER_NAME = '채용공고 분석 서비스 얼리버드 등록'
 const OFFER_PERIOD_TEXT = '결제 후 1시간 이내 (평일 10시~18시)'
 const DEFAULT_KCP_SCRIPT_URL = 'https://spay.kcp.co.kr/plugin/kcp_spay_hub.js'
+const TEST_KCP_SCRIPT_URL = 'https://testspay.kcp.co.kr/plugin/kcp_spay_hub.js'
 
 function buildOrderId() {
   const random = Math.random().toString(36).slice(2, 10)
@@ -91,6 +92,19 @@ function canUseKcpPopupExecute() {
   return typeof window.KCP_Pay_Execute_Web === 'function'
 }
 
+function isLikelyTestSiteCode(siteCode) {
+  return String(siteCode || '')
+    .trim()
+    .toUpperCase()
+    .startsWith('T')
+}
+
+function resolveKcpScriptUrl(siteCode) {
+  const configured = import.meta.env.VITE_KCP_JS_URL
+  if (configured) return configured
+  return isLikelyTestSiteCode(siteCode) ? TEST_KCP_SCRIPT_URL : DEFAULT_KCP_SCRIPT_URL
+}
+
 function getKcpFieldValue(payload, key) {
   if (!payload || !key) return ''
 
@@ -140,7 +154,7 @@ function installKcpCompletePaymentHandler(form, callbackUrl) {
 
 export async function requestEarlyBirdPayment(customerEmail) {
   const siteCode = import.meta.env.VITE_KCP_SITE_CODE
-  const scriptUrl = import.meta.env.VITE_KCP_JS_URL || DEFAULT_KCP_SCRIPT_URL
+  const scriptUrl = resolveKcpScriptUrl(siteCode)
 
   if (!siteCode) {
     throw new Error('KCP Site Code가 설정되지 않았습니다.')

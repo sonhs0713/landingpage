@@ -1,4 +1,6 @@
 import { Buffer } from 'node:buffer'
+const DEFAULT_TEST_APPROVAL_URL = 'https://stg-spl.kcp.co.kr/gw/enc/v1/payment'
+const DEFAULT_PROD_APPROVAL_URL = 'https://spl.kcp.co.kr/gw/enc/v1/payment'
 
 function getBaseUrl(req) {
   const protocol = req.headers['x-forwarded-proto'] || 'https'
@@ -56,6 +58,19 @@ function resolvePayType(value) {
     '000000001000': 'PATK',
   }
   return map[raw] || ''
+}
+
+function isLikelyTestSiteCode(value) {
+  return String(value || '')
+    .trim()
+    .toUpperCase()
+    .startsWith('T')
+}
+
+function normalizeCertInfo(value) {
+  const raw = String(value || '').trim()
+  if (!raw) return ''
+  return raw.replace(/\\n/g, '\n')
 }
 
 function parseApprovalResponse(bodyText) {
@@ -134,9 +149,10 @@ function extractApprovalFields(parsed, fallback = {}) {
 }
 
 async function requestApproval(payloadParams) {
-  const approvalUrl = process.env.KCP_APPROVAL_URL
-  const certInfo = process.env.KCP_CERT_INFO
   const siteCode = payloadParams.get('site_cd') || process.env.KCP_SITE_CODE
+  const approvalUrl =
+    process.env.KCP_APPROVAL_URL || (isLikelyTestSiteCode(siteCode) ? DEFAULT_TEST_APPROVAL_URL : DEFAULT_PROD_APPROVAL_URL)
+  const certInfo = normalizeCertInfo(process.env.KCP_CERT_INFO)
   const encData = payloadParams.get('enc_data')
   const encInfo = payloadParams.get('enc_info')
   const tranCd = payloadParams.get('tran_cd') || '00100000'
