@@ -31,7 +31,7 @@ async function readBody(req) {
 
 function pickForwardParams(params) {
   const next = new URLSearchParams()
-  const keys = ['ordr_idxx', 'good_mny', 'tno', 'res_cd', 'res_msg']
+  const keys = ['ordr_idxx', 'good_mny', 'tno', 'res_cd', 'res_msg', 'pay_method']
 
   keys.forEach((key) => {
     const value = params.get(key)
@@ -39,6 +39,114 @@ function pickForwardParams(params) {
   })
 
   return next
+}
+
+function resolvePayType(value) {
+  const raw = String(value || '').trim().toUpperCase()
+  const map = {
+    CARD: 'PACA',
+    BANK: 'PABK',
+    MOBX: 'PAMC',
+    TPNT: 'PAPT',
+    GIFT: 'PATK',
+    '100000000000': 'PACA',
+    '010000000000': 'PABK',
+    '000010000000': 'PAMC',
+    '000100000000': 'PAPT',
+    '000000001000': 'PATK',
+  }
+  return map[raw] || ''
+}
+
+function parseApprovalResponse(bodyText) {
+  const raw = String(bodyText || '').trim()
+  if (!raw) return {}
+
+  try {
+    return JSON.parse(raw)
+  } catch {
+    // ignore
+  }
+
+  const params = new URLSearchParams(raw)
+  if (params.size > 0) {
+    return Object.fromEntries(params.entries())
+  }
+
+  return {}
+}
+
+async function requestApproval(payloadParams) {
+  const approvalUrl = process.env.KCP_APPROVAL_URL
+  const certInfo = process.env.KCP_CERT_INFO
+  const siteCode = payloadParams.get('site_cd') || process.env.KCP_SITE_CODE
+  const encData = payloadParams.get('enc_data')
+  const encInfo = payloadParams.get('enc_info')
+  const tranCd = payloadParams.get('tran_cd') || '00100000'
+  const orderNo = payloadParams.get('ordr_idxx') || payloadParams.get('ordr_no')
+  const orderAmount = payloadParams.get('good_mny') || payloadParams.get('ordr_mony')
+  const payType = resolvePayType(payloadParams.get('pay_method') || payloadParams.get('pay_type'))
+
+  if (!approvalUrl) {
+    return { ok: false, res_cd: 'NO_APPROVAL_URL', res_msg: 'KCP 승인요청 URL이 설정되지 않았습니다.' }
+  }
+  if (!certInfo) {
+    return { ok: false, res_cd: 'NO_CERT_INFO', res_msg: 'KCP 서비스 인증서가 설정되지 않았습니다.' }
+  }
+  if (!siteCode || !encData || !encInfo || !orderNo || !orderAmount || !payType) {
+    return { ok: false, res_cd: 'INVALID_APPROVAL_PAYLOAD', res_msg: '승인요청 필수 파라미터가 누락되었습니다.' }
+  }
+
+  const approvalPayload = {
+    tran_cd: tranCd,
+    kcp_cert_info: certInfo,
+    site_cd: siteCode,
+    enc_data: encData,
+    enc_info: encInfo,
+    ordr_mony: String(orderAmount),
+    pay_type: payType,
+    ordr_no: String(orderNo),
+  }
+
+  try {
+    const response = await fetch(approvalUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json, text/plain, */*',
+      },
+      body: JSON.stringify(approvalPayload),
+    })
+
+    const rawText = await response.text()
+    const parsed = parseApprovalResponse(rawText)
+    const resultCode = parsed.res_cd || ''
+    const resultMessage = parsed.res_msg || ''
+
+    if (!response.ok) {
+      return {
+        ok: false,
+        res_cd: resultCode || 'APPROVAL_HTTP_ERROR',
+        res_msg: resultMessage || `승인요청 HTTP 오류(${response.status})`,
+      }
+    }
+
+    return {
+      ok: resultCode === '0000' && Boolean(parsed.tno),
+      res_cd: resultCode || 'NO_RES_CD',
+      res_msg: resultMessage || '승인 응답코드가 없습니다.',
+      tno: parsed.tno || '',
+      good_mny: parsed.amount || String(orderAmount),
+      pay_method: parsed.pay_method || payType,
+      order_no: parsed.order_no || String(orderNo),
+    }
+  } catch (error) {
+    return {
+      ok: false,
+      res_cd: 'APPROVAL_REQUEST_FAILED',
+      res_msg: error instanceof Error ? error.message : '승인요청 중 오류가 발생했습니다.',
+    }
+  }
 }
 
 export default async function handler(req, res) {
@@ -53,21 +161,50 @@ export default async function handler(req, res) {
       ? new URLSearchParams(req.query || {})
       : new URLSearchParams(await readBody(req))
 
-  const resultCode = payloadParams.get('res_cd')
-  const transactionId = payloadParams.get('tno')
-  const isSuccess = resultCode === '0000' && Boolean(transactionId)
-  const path = isSuccess ? '/payment-complete' : '/payment-fail'
   const forwardParams = pickForwardParams(payloadParams)
+  const hasAuthPayload = Boolean(payloadParams.get('enc_data') && payloadParams.get('enc_info'))
+  const hasApprovalResult = Boolean(payloadParams.get('res_cd'))
+
+  let finalResultCode = payloadParams.get('res_cd') || ''
+  let finalResultMessage = payloadParams.get('res_msg') || ''
+  let finalTno = payloadParams.get('tno') || ''
+  let finalAmount = payloadParams.get('good_mny') || ''
+  let finalOrderNo = payloadParams.get('ordr_idxx') || ''
+  let finalPayMethod = payloadParams.get('pay_method') || ''
+
+  if (!hasApprovalResult && hasAuthPayload) {
+    const approved = await requestApproval(payloadParams)
+    finalResultCode = approved.res_cd || ''
+    finalResultMessage = approved.res_msg || ''
+    finalTno = approved.tno || finalTno
+    finalAmount = approved.good_mny || finalAmount
+    finalOrderNo = approved.order_no || finalOrderNo
+    finalPayMethod = approved.pay_method || finalPayMethod
+  }
+
+  const isSuccess = finalResultCode === '0000' && Boolean(finalTno)
+  const path = isSuccess ? '/payment-complete' : '/payment-fail'
+
+  if (finalOrderNo) forwardParams.set('ordr_idxx', finalOrderNo)
+  if (finalAmount) forwardParams.set('good_mny', finalAmount)
+  if (finalPayMethod) forwardParams.set('pay_method', finalPayMethod)
+  if (finalTno) forwardParams.set('tno', finalTno)
 
   if (!isSuccess) {
-    if (!resultCode) {
-      forwardParams.set('res_cd', 'NO_RES_CD')
-      forwardParams.set('res_msg', 'KCP 응답코드(res_cd)가 전달되지 않았습니다.')
-    } else if (resultCode === '0000' && !transactionId) {
-      forwardParams.set('res_cd', 'NO_TNO')
-      forwardParams.set('res_msg', 'KCP 승인번호(tno)가 전달되지 않았습니다.')
+    if (!finalResultCode) {
+      finalResultCode = hasAuthPayload ? 'NO_APPROVAL_RESPONSE' : 'NO_RES_CD'
+      finalResultMessage = hasAuthPayload
+        ? '승인요청 응답코드(res_cd)를 확인할 수 없습니다.'
+        : 'KCP 응답코드(res_cd)가 전달되지 않았습니다.'
+    }
+    if (finalResultCode === '0000' && !finalTno) {
+      finalResultCode = 'NO_TNO'
+      finalResultMessage = 'KCP 승인번호(tno)가 전달되지 않았습니다.'
     }
   }
+
+  if (finalResultCode) forwardParams.set('res_cd', finalResultCode)
+  if (finalResultMessage) forwardParams.set('res_msg', finalResultMessage)
 
   const forward = forwardParams.toString()
   const nextUrl = `${getBaseUrl(req)}${path}${forward ? `?${forward}` : ''}`

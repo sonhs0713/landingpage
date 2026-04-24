@@ -9,6 +9,12 @@ function buildOrderId() {
 }
 
 function appendHiddenInput(form, name, value) {
+  const existing = form.querySelector(`input[name="${name}"]`)
+  if (existing) {
+    existing.value = value
+    return
+  }
+
   const input = document.createElement('input')
   input.type = 'hidden'
   input.name = name
@@ -85,6 +91,53 @@ function canUseKcpPopupExecute() {
   return typeof window.KCP_Pay_Execute_Web === 'function'
 }
 
+function getKcpFieldValue(payload, key) {
+  if (!payload || !key) return ''
+
+  const direct = payload[key]
+  if (typeof direct === 'string' || typeof direct === 'number') return String(direct)
+  if (direct && typeof direct.value !== 'undefined') return String(direct.value)
+
+  if (typeof payload.get === 'function') {
+    const fromGet = payload.get(key)
+    if (typeof fromGet !== 'undefined' && fromGet !== null) return String(fromGet)
+  }
+
+  return ''
+}
+
+function installKcpCompletePaymentHandler(form, callbackUrl) {
+  window.m_Completepayment = (payload) => {
+    const keysToForward = [
+      'res_cd',
+      'res_msg',
+      'tran_cd',
+      'enc_data',
+      'enc_info',
+      'ordr_idxx',
+      'good_mny',
+      'pay_method',
+      'site_cd',
+    ]
+
+    keysToForward.forEach((key) => {
+      const value = getKcpFieldValue(payload, key)
+      if (value) appendHiddenInput(form, key, value)
+    })
+
+    if (payload && typeof payload.submit === 'function') {
+      payload.action = callbackUrl
+      payload.method = 'POST'
+      payload.acceptCharset = 'utf-8'
+      payload.submit()
+      return
+    }
+
+    form.action = callbackUrl
+    form.submit()
+  }
+}
+
 export async function requestEarlyBirdPayment(customerEmail) {
   const siteCode = import.meta.env.VITE_KCP_SITE_CODE
   const scriptUrl = import.meta.env.VITE_KCP_JS_URL || DEFAULT_KCP_SCRIPT_URL
@@ -109,7 +162,8 @@ export async function requestEarlyBirdPayment(customerEmail) {
   form.method = 'POST'
   form.acceptCharset = 'utf-8'
   // KCP 결제 결과 콜백을 받을 서버 엔드포인트입니다.
-  form.action = `${window.location.origin}/api/kcp/return`
+  const callbackUrl = `${window.location.origin}/api/kcp/return`
+  form.action = callbackUrl
   form.style.display = 'none'
 
   appendHiddenInput(form, 'site_cd', siteCode)
@@ -122,11 +176,12 @@ export async function requestEarlyBirdPayment(customerEmail) {
   appendHiddenInput(form, 'offer_period', OFFER_PERIOD_TEXT)
   appendHiddenInput(form, 'buyr_mail', customerEmail)
   // KCP는 Ret_URL로 POST를 보내므로 서버 엔드포인트에서 먼저 수신해야 합니다.
-  appendHiddenInput(form, 'Ret_URL', `${window.location.origin}/api/kcp/return`)
+  appendHiddenInput(form, 'Ret_URL', callbackUrl)
   appendHiddenInput(form, 'pay_method', '100000000000')
   appendHiddenInput(form, 'currency', '410')
 
   document.body.appendChild(form)
+  installKcpCompletePaymentHandler(form, callbackUrl)
 
   if (canUseKcpPopupExecute()) {
     try {
