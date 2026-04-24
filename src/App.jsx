@@ -101,9 +101,6 @@ function App() {
         <div className="nav-logo">
           JOB<span>RISK</span>
         </div>
-        <a href="#form" className="nav-cta">
-          리스크 진단받기
-        </a>
       </nav>
 
       <section className="hero">
@@ -568,9 +565,6 @@ function App() {
 
       <Footer />
 
-      <div className="sticky-cta">
-        <a href="#form">내 커리어 리스크 진단받기 (3,000원)</a>
-      </div>
     </div>
   )
 }
