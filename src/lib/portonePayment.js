@@ -8,15 +8,9 @@ function buildPaymentId() {
   return `earlybird_${Date.now()}_${random}`
 }
 
-function buildOrderId() {
-  const random = Math.random().toString(36).slice(2, 10)
-  return `order_${Date.now()}_${random}`
-}
-
-function toPaymentCompleteUrl(paymentId, orderId, amount) {
+function toPaymentCompleteUrl(paymentId, amount) {
   const params = new URLSearchParams()
   params.set('paymentId', paymentId)
-  params.set('orderId', orderId)
   params.set('amount', String(amount))
   return `/payment-complete?${params.toString()}`
 }
@@ -30,14 +24,13 @@ export async function requestEarlyBirdPayment(customerEmail) {
   }
 
   const paymentId = buildPaymentId()
-  const orderId = buildOrderId()
-
   sessionStorage.setItem('earlybird_customer_email', customerEmail)
   sessionStorage.setItem('earlybird_payment_id', paymentId)
-  sessionStorage.setItem('earlybird_order_id', orderId)
+  // PortOne 퀵 가이드 기준으로 paymentId를 주문 고유 식별자로 사용합니다.
+  sessionStorage.setItem('earlybird_order_id', paymentId)
   sessionStorage.setItem('earlybird_amount', String(EARLY_BIRD_AMOUNT))
 
-  const redirectUrl = `${window.location.origin}${toPaymentCompleteUrl(paymentId, orderId, EARLY_BIRD_AMOUNT)}`
+  const redirectUrl = `${window.location.origin}${toPaymentCompleteUrl(paymentId, EARLY_BIRD_AMOUNT)}`
   const result = await requestPayment({
     storeId,
     channelKey,
@@ -47,7 +40,8 @@ export async function requestEarlyBirdPayment(customerEmail) {
     currency: 'KRW',
     payMethod: 'CARD',
     customData: {
-      orderId,
+      product: 'EARLY_BIRD_ANALYSIS',
+      amount: EARLY_BIRD_AMOUNT,
     },
     forceRedirect: true,
     customer: {
@@ -61,6 +55,6 @@ export async function requestEarlyBirdPayment(customerEmail) {
   }
 
   if (result && typeof result === 'object' && 'paymentId' in result && result.paymentId) {
-    window.location.assign(toPaymentCompleteUrl(String(result.paymentId), orderId, EARLY_BIRD_AMOUNT))
+    window.location.assign(toPaymentCompleteUrl(String(result.paymentId), EARLY_BIRD_AMOUNT))
   }
 }

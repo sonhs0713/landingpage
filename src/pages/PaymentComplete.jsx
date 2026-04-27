@@ -22,10 +22,10 @@ function PaymentComplete() {
 
       const params = new URLSearchParams(location.search)
       const paymentId = params.get('paymentId') || sessionStorage.getItem('earlybird_payment_id') || ''
-      const orderId = params.get('orderId') || sessionStorage.getItem('earlybird_order_id') || ''
+      const orderId = params.get('orderId') || sessionStorage.getItem('earlybird_order_id') || paymentId
       const amount = params.get('amount') || sessionStorage.getItem('earlybird_amount') || ''
 
-      if (!paymentId || !orderId || !amount) {
+      if (!paymentId || !amount) {
         setErrorMessage('결제 확인 정보가 누락되었습니다. 다시 시도해주세요.')
         return
       }
@@ -40,7 +40,6 @@ function PaymentComplete() {
           },
           body: JSON.stringify({
             paymentId,
-            orderId,
             amount: Number(amount),
           }),
         })

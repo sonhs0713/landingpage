@@ -60,6 +60,30 @@ function toNumber(value) {
   return NaN
 }
 
+function normalizeId(value) {
+  return String(value || '').trim()
+}
+
+function buildOrderIdCandidates(payload, normalized) {
+  const rawCandidates = [
+    getByPath(payload, 'orderId'),
+    getByPath(payload, 'payment.orderId'),
+    getByPath(payload, 'customData.orderId'),
+    getByPath(payload, 'payment.customData.orderId'),
+    pickValue(normalized, ['order_id', 'orderid']),
+  ]
+
+  const seen = new Set()
+  const next = []
+  rawCandidates.forEach((raw) => {
+    const id = normalizeId(raw)
+    if (!id || seen.has(id)) return
+    seen.add(id)
+    next.push(id)
+  })
+  return next
+}
+
 async function readJsonBody(req) {
   if (req.body && typeof req.body === 'object') return req.body
   if (typeof req.body === 'string') return JSON.parse(req.body || '{}')
@@ -81,9 +105,12 @@ function parsePortOneResponse(payload) {
     getByPath(payload, 'paidAmount') ??
     getByPath(payload, 'payment.amount.total')
 
+  const orderIdCandidates = buildOrderIdCandidates(payload, normalized)
+
   return {
     status: pickValue(normalized, ['status', 'payment_status', 'state']),
-    orderId: pickValue(normalized, ['order_id', 'orderid', 'merchant_uid', 'merchantid', 'customid']),
+    orderId: orderIdCandidates[0] || '',
+    orderIdCandidates,
     amount:
       typeof amountFromPath !== 'undefined'
         ? String(amountFromPath)
@@ -122,12 +149,12 @@ export default async function handler(req, res) {
   const expectedOrderId = String(payload?.orderId || '').trim()
   const expectedAmount = toNumber(payload?.amount)
 
-  if (!paymentId || !expectedOrderId || !Number.isFinite(expectedAmount)) {
+  if (!paymentId || !Number.isFinite(expectedAmount)) {
     res.status(400).json({
       ok: false,
       isPaid: false,
       code: 'INVALID_VERIFY_PAYLOAD',
-      message: 'paymentId, orderId, amount가 모두 필요합니다.',
+      message: 'paymentId, amount가 모두 필요합니다.',
     })
     return
   }
@@ -182,12 +209,17 @@ export default async function handler(req, res) {
     return
   }
 
-  if (parsed.orderId && parsed.orderId !== expectedOrderId) {
+  const expectedOrderIdNormalized = normalizeId(expectedOrderId)
+  const hasExpectedOrderId = Boolean(expectedOrderIdNormalized)
+  const hasOrderCandidates = parsed.orderIdCandidates.length > 0
+  const isOrderMatched = parsed.orderIdCandidates.some((id) => id === expectedOrderIdNormalized)
+
+  if (hasExpectedOrderId && hasOrderCandidates && !isOrderMatched) {
     res.status(400).json({
       ok: false,
       isPaid: false,
       code: 'ORDER_ID_MISMATCH',
-      message: '주문번호가 일치하지 않습니다.',
+      message: `주문번호가 일치하지 않습니다. expected=${expectedOrderIdNormalized}, actual=${parsed.orderIdCandidates.join(',')}`,
     })
     return
   }
